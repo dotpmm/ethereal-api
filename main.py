@@ -47,9 +47,8 @@ YDL_OPTS_BASE: dict = {
     "http_headers": {"User-Agent": _UA},
 }
 
-# if os.getenv("YTDLP_COOKIEFILE"):
-#     YDL_OPTS_BASE["cookiefile"] =  os.getenv("YTDLP_COOKIEFILE")
-# i dont think so this will be needed, but we might cuz the bot will be making too many calls...
+if os.getenv("YTDLP_COOKIEFILE"):
+    YDL_OPTS_BASE["cookiefile"] = "/etc/secrets/cookies.txt"
 
 CHUNK_SIZE = 1024 * 64
 
