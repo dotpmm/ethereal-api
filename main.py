@@ -47,13 +47,13 @@ YDL_OPTS_BASE: dict = {
     "http_headers": {"User-Agent": _UA},
 }
 
-if os.getenv("YTDLP_COOKIEFILE"):
-    YDL_OPTS_BASE["cookiefile"] = "/etc/secrets/cookies.txt"
-    # debug
-    if os.path.exists("/etc/secrets/cookies.txt"):
-        print("cookies.txt found, using it for authentication")
-    else:
-        print("cookies.txt not found, falling back to anonymous access")
+_COOKIE_FILE = "/etc/secrets/cookies"
+
+if os.path.exists(_COOKIE_FILE):
+    YDL_OPTS_BASE["cookiefile"] = _COOKIE_FILE
+    log.info("yt-dlp: cookies loaded from %s", _COOKIE_FILE)
+else:
+    log.warning("Cookie file not found at %s — running unauthenticated", _COOKIE_FILE)
 
 CHUNK_SIZE = 1024 * 64
 
