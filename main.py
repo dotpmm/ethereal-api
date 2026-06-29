@@ -49,6 +49,11 @@ YDL_OPTS_BASE: dict = {
 
 if os.getenv("YTDLP_COOKIEFILE"):
     YDL_OPTS_BASE["cookiefile"] = "/etc/secrets/cookies.txt"
+    # debug
+    if os.path.exists("/etc/secrets/cookies.txt"):
+        print("cookies.txt found, using it for authentication")
+    else:
+        print("cookies.txt not found, falling back to anonymous access")
 
 CHUNK_SIZE = 1024 * 64
 
