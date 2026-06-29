@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import re
+import shutil
 from typing import Optional
 from urllib.parse import quote
 
@@ -47,13 +48,15 @@ YDL_OPTS_BASE: dict = {
     "http_headers": {"User-Agent": _UA},
 }
 
-_COOKIE_FILE = "/etc/secrets/cookies"
+_COOKIE_SRC = "/etc/secrets/cookies"
+_COOKIE_WORKING = "/tmp/cookies.txt"
 
-if os.path.exists(_COOKIE_FILE):
-    YDL_OPTS_BASE["cookiefile"] = _COOKIE_FILE
-    log.info("yt-dlp: cookies loaded from %s", _COOKIE_FILE)
+if os.path.exists(_COOKIE_SRC):
+    shutil.copy2(_COOKIE_SRC, _COOKIE_WORKING)
+    YDL_OPTS_BASE["cookiefile"] = _COOKIE_WORKING
+    log.info("yt-dlp: cookies copied to %s and loaded", _COOKIE_WORKING)
 else:
-    log.warning("Cookie file not found at %s — running unauthenticated", _COOKIE_FILE)
+    log.warning("Cookie file not found at %s — running unauthenticated", _COOKIE_SRC)
 
 CHUNK_SIZE = 1024 * 64
 
